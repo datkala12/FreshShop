@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Site Metas -->
+<title>Fresh Shop</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Site Icons -->
+<th:block th:replace="~{User/Style/template-css:: html}"></th:block>
+
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{User/fragment/header.html :: header}"></div>
+	<!-- End Main Top -->
+
+
+
+	<!-- Start All Title Box -->
+	<div class="all-title-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 th:text="#{table.tbOrder}"></h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End All Title Box -->
+	
+	
+
+	<!-- Start Cart  -->
+	<div class="cart-box-main" th:if="${ordersList != null}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="table-main table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Phone Number</th>
+									<th>Address</th>
+									<th th:text="#{table.amount}"></th>
+									<th th:text="#{table.date}"></th>
+									<th th:text="#{table.status}"></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="o : ${ordersList}">
+									<td class="fullName-pr" th:text="${o.fullName}"></td>
+									<td class="phoneNumber-pr" th:text="${o.phoneNumber}"></td>
+									<td class="address-pr" th:text="${o.address}"></td>
+									<td class="price-pr formatPrice" th:text="${o.totalAmount}"></td>
+									<td class="name-pr formatDate" th:text="${o.createdAt}"></td>
+									<td class="price-pr" th:text="${o.status}"></td>
+									<td class="price-pr" style="text-align: right;"><a
+										class="btn btn-warning"
+										th:href="@{/orderDetail/completed/{orderId}(orderId=${o.orderId})}"
+										th:text="#{btnReadmore}"></a></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+					<div class="pagination-style text-center m-5"
+						th:if="${page.totalPages > 1}">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center align-items-center">
+								<li class="page-item" th:if="${page.totalPages > 0}"
+									th:classappend="${page.number == 0 ? 'disabled' : ''}"><a
+									class="page-link"
+									th:href="@{/order/completed(currentPage=${page.number - 1})}"
+									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+								</a></li>
+
+								<li class="page-item" th:if="${page.totalPages > 0}"
+									th:classappend="${currentPage == 0 ? 'active' : ''}"><a
+									class="page-link" th:href="@{/order/completed(currentPage=0)}">1</a>
+								</li>
+
+								<li class="page-item" th:if="${page.totalPages > 2}"
+									th:each="pageNumber : ${#numbers.sequence(2, page.totalPages - 1)}"
+									th:classappend="${currentPage == pageNumber - 1 ? 'active' : ''}">
+									<a class="page-link"
+									th:href="@{/order/completed(currentPage=${pageNumber-1})}">
+										<span th:text="${pageNumber}"></span>
+								</a>
+								</li>
+
+								<li class="page-item" th:if="${page.totalPages > 1}"
+									th:classappend="${currentPage == page.totalPages - 1 ? 'active' : ''}">
+									<a class="page-link"
+									th:href="@{/order/completed(currentPage=${page.totalPages - 1})}">
+										<span th:text="${page.totalPages}"></span>
+								</a>
+								</li>
+
+								<li class="page-item" th:if="${page.totalPages > 0}"
+									th:classappend="${page.number == page.totalPages - 1 ? 'disabled' : ''}">
+									<a class="page-link"
+									th:href="@{/order/completed(currentPage=${currentPage + 1})}"
+									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+								</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="cart-box-main text-center">
+		<div class="mb-3">
+			<a th:href="@{/shop/page/1?cateId=all&&searchName=none}"
+				class="btn hvr-hover" th:text="#{btnContinue}"></a>
+		</div>
+	</div>
+
+	<!-- End Cart -->
+
+	<!-- End Instagram Feed  -->
+
+
+	<!-- Start Footer  -->
+	<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+	<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+
+
+	<script>
+		// Hàm xử lý định dạng giá trị và gán lại vào phần tử
+		function formatAndSetPrice() {
+			// Lặp qua tất cả các phần tử có class 'product-price'
+			$('.formatPrice').each(
+					function() {
+						// Lấy giá trị từ phần tử b
+						var priceElement = $(this);
+						var currentPrice = priceElement.text();
+
+						// Định dạng giá trị theo hàng nghìn (ví dụ)
+						var formattedPrice = Number(currentPrice)
+								.toLocaleString('vi-VN', {
+									style : 'currency',
+									currency : 'VND',
+									minimumFractionDigits : 0,
+									maximumFractionDigits : 0
+								});
+
+						// Gán lại giá trị vào phần tử
+						priceElement.text(formattedPrice);
+					});
+		}
+
+		// Lấy tất cả các phần tử có class là 'formatDate'
+		var dateElements = document.querySelectorAll('.formatDate');
+
+		// Định dạng ngày tháng năm cho mỗi phần tử
+		dateElements.forEach(function(element) {
+			// Lấy giá trị ngày tháng từ textContent của phần tử
+			var dateValue = element.textContent;
+
+			// Chuyển đổi giá trị ngày tháng sang đối tượng Date
+			var date = new Date(dateValue);
+
+			// Định dạng ngày tháng năm theo định dạng Việt Nam
+			var formattedDate = date.toLocaleString('vi-VN', {
+				timeZone : 'Asia/Ho_Chi_Minh'
+			});
+
+			// Gán lại giá trị đã định dạng vào textContent của phần tử
+			element.textContent = formattedDate;
+		});
+
+		// Gọi hàm khi trang đã tải xong
+		$(document).ready(function() {
+			formatAndSetPrice();
+			formatAndSetDate();
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link text-dark bg-white" th:href="@{/admin/dashboard}">
+<!--         <i class="bi bi-grid text-success"></i> -->
+		<i class="bi bi-speedometer2 text-success"></i>
+        <span th:text="#{table.tbDashboard}"></span>
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link text-dark bg-white" th:href="@{/admin/viewCustomer/1?sortField=customerName&sortDir=asc&searchName=none}">
+        <i class="bi bi-person text-success"></i>
+        <span th:text="#{table.tbCustomer}"></span>
+      </a>
+    </li>
+    
+   <li class="nav-item">
+      <a class="nav-link text-dark bg-white" th:href="@{/admin/category}">
+        <i class="bi bi-grid text-success"></i>
+        <span th:text="#{table.tbCate}"></span>
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link text-dark bg-white" th:href="@{/admin/product}">
+<!--         <i class="bi bi-grid text-success"></i> -->
+		<i class="bi bi-box text-success"></i>
+        <span th:text="#{table.tbProduct}"></span>
+      </a>
+    </li>
+
+      <li class="nav-item">
+          <a class="nav-link text-dark bg-white"
+             th:href="@{/admin/order/1?sortField=fullName&sortDir=asc&statusOrder=All&searchName=none}">
+              <i class="bi bi-cart-check text-success"></i>
+              <span th:text="#{table.tbOrder}"></span>
+          </a>
+      </li>
+<!--       <li class="nav-item"> -->
+<!--           <a class="nav-link text-dark bg-white" -->
+<!--              th:href="@{'/admin/orderDetail/1' + '?sortField=amount' + '&sortDir=' + ${sortDir}}"> -->
+<!--               <i class="bi bi-cart-fill text-success"></i> -->
+<!--               <span th:text="#{table.tbOrderDetails}"></span> -->
+<!--           </a> -->
+<!--       </li> -->
+      <!-- End Login Page Nav -->
+      
+     <li class="nav-item">
+      <a class="nav-link text-dark bg-white" th:href="@{/admin/viewOpenMessage/1?sortField=name&sortDir=asc&searchName=none}">
+        <i class="bi bi-envelope text-success"></i>
+        <span th:text="#{table.tbMsgOpen}"></span>
+      </a>
+    </li>
+    
+<!--     <li class="nav-item"> -->
+<!--       <a class="nav-link text-dark bg-white" th:href="@{/admin/viewCloseMessage/1?sortField=name&sortDir=asc}"> -->
+<!--         <i class="bi bi-envelope text-success"></i> -->
+<!--         <span th:text="#{table.tbMsgClose}"></span> -->
+<!--       </a> -->
+<!--     </li> -->
+  </ul>
+
+</aside>
+<!-- End Sidebar-->
+
+</html>

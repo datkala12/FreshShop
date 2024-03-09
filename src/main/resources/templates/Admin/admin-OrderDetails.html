@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+
+  <title>Fresh Shop</title>
+
+  <th:block th:replace="~{Admin/Admin-style/Admin-template-css:: html}"></th:block>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<!-- Start Main Top -->
+<div th:replace="~{Admin/Admin-fragment/Admin-header.html:: header}"></div>
+<!-- End Main Top -->
+
+<!-- Start Sidebar -->
+<div th:replace="~{Admin/Admin-fragment/Admin-sidebar.html:: aside}"></div>
+<!-- End Sidebar -->
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1 th:text="#{table.tbOrderDetails}"></h1>
+
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" th:text="#{table.tbOrderDetails}"></h5>
+            <!-- Table with stripped rows -->
+            <div class="input-group mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+              <label class="input-group-text" for="inputGroupSelect01">Show
+                <select class="form-select ms-2" id="inputGroupSelect01">
+                  <option value="1">10</option>
+                  <option value="2">25</option>
+                  <option value="3">50</option>
+                  <option value="4">100</option>
+                </select>
+              </label>
+            </div>
+            <table class="table">
+              <thead>
+              <tr>
+                <th scope="col"><a th:href="@{'/admin/orderDetail/' + ${currentPage} + '?sortField=orderDetailsId' + '&sortDir=' + ${sortDir}}" th:text="#{table.orderDetailId}"></a></th>
+                <th scope="col"><a th:href="@{'/admin/orderDetail/' + ${currentPage} + '?sortField=order' + '&sortDir=' + ${sortDir}}" th:text="#{table.orderId}"></a></th>
+                <th scope="col"><a th:href="@{'/admin/orderDetail/' + ${currentPage} + '?sortField=product' + '&sortDir=' + ${sortDir}}" th:text="#{table.productName}"></a></th>
+                <th scope="col"><a th:href="@{'/admin/orderDetail/' + ${currentPage} + '?sortField=quantity' + '&sortDir=' + ${sortDir}}" th:text="#{table.quantity}"></a></th>
+                <th scope="col"><a th:href="@{'/admin/orderDetail/' + ${currentPage} + '?sortField=amount' + '&sortDir=' + ${sortDir}}" th:text="#{table.total}"></a> </th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="odt : ${listOrderDetail}">
+                <th th:text="${odt.orderDetailsId}">1</th>
+                <td th:text="${odt.order.orderId}"></td>
+                <td th:text="${odt.product.productName}"></td>
+                <td th:text="${odt.quantity}"></td>
+                <td th:text="${odt.amount}"></td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger me-2" th:text="#{btnEdit}"></button>
+                <td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="pagination justify-content-center">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" th:if="${currentPage > 1}"
+                     th:href="@{'/admin/orderDetail/' + (${currentPage} - 1) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">&laquo;</a>
+                  <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
+                </li>
+
+                <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}"
+                    th:classappend="${currentPage == i} ? 'active' : ''">
+                  <a class="page-link"
+                     th:href="@{'/admin/orderDetail/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                </li>
+
+                <li class="page-item">
+                  <a class="page-link" th:if="${currentPage < totalPages}"
+                     th:href="@{'/admin/orderDetail/' + (${currentPage} + 1) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">&raquo;</a>
+                  <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
+                </li>
+              </ul>
+            </div>
+            <!-- End Table with stripped rows -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+<!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<th:block th:replace="~{Admin/Admin-style/Admin-template-scr:: html}"></th:block>
+</body>
+</html>

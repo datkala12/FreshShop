@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    <title>Fresh Shop</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <th:block th:replace="~{User/Style/template-css :: html}"></th:block>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!-- Start Main Top -->
+<div th:replace="~{User/fragment/header.html :: header}"></div>
+<!-- End Main Top -->
+
+
+
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 th:text="#{menu.forget}"></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row new-account-login">
+            <div class="mx-auto w-50">
+                <div class="title-left">
+                    <h3 th:text="#{login.title}"></h3>
+                </div>
+
+
+                <form id="formForget" th:action="@{/public/resetPassword}" th:method="POST">
+                    <li class="alert alert-danger" role="alert" th:if="${notFoundEmail != null}" th:text="#{notFoundEmail}"/>
+                    <li class="alert alert-danger" role="alert" th:if="${emailUpdate != null}" th:text="#{emailUpdate}"/>
+                    <div class="form-row mb-3">
+                        <label for="email" class="mb-0" th:text="#{email}"></label>
+                        <input id="email" type="email" class="form-control" th:placeholder="#{placeholder.email}"
+                               name="email">
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn hvr-hover" th:text="#{btnForget}"></button>
+                        <a class="btn bg-warning ml-2" th:text="#{btnBackToLogin}" th:href="@{/login}"></a>
+                    </div>
+                    <div>
+                        <div class="form-text my-3">
+                            <span th:text="#{login.noAccount}"></span>
+                            <a class="text-success" th:href="@{/public/register}" th:text="#{btnRegister}"></a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Cart -->
+
+<!-- Start Instagram Feed  -->
+<div class="instagram-box">
+    <div class="main-instagram owl-carousel owl-theme">
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-01.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-02.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-03.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-04.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-05.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-06.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-07.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-08.jpg" alt=""/>
+                <div class="hov-in"><a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-09.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-05.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Instagram Feed  -->
+
+
+<!-- Start Footer  -->
+<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+</body>
+
+</html>

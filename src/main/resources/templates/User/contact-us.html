@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    <title>Fresh shop</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <th:block th:replace="~{User/Style/template-css :: html}"></th:block>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!-- Start Main Top -->
+<div th:replace="~{User/fragment/header.html :: header}"></div>
+<!-- End Main Top -->
+
+
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 th:text="#{menu.contact}">Contact Us</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+<!-- Start Contact Us  -->
+<div class="contact-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <div class="contact-form-right">
+                    <h2 th:text="#{contact.title}"></h2>
+                    <p th:text="#{contact.desc}"></p>
+                    <ul>
+                        <li class="alert alert-danger" role="alert"
+                            th:each="error : ${#fields.errors('contactUs.*')}" th:text="${error}"></li>
+                    </ul>
+                    <form th:action="@{/saveMsg}" method="post" th:object="${contactUs}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" th:field="*{name}"
+                                               th:placeholder="#{placeholder.name}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" th:field="*{mobileNum}"
+                                               th:placeholder="#{placeholder.phone}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" th:placeholder="#{placeholder.email1}" th:field="*{email}" class="form-control"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" th:field="*{subject}" th:placeholder="#{placeholder.subject}"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea class="form-control" th:field="*{message}" th:placeholder="#{placeholder.content}"
+                                              rows="4" required></textarea>
+                                </div>
+                                <div class="submit-button text-center">
+                                    <button class="btn hvr-hover" id="submit" type="submit" th:text="#{btnSendMessage}"></button>
+                                    <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="contact-info-left">
+                    <h2 th:text="#{contact.info}"></h2>
+                    <p th:text="#{contact.info1}"> </p>
+                    <ul>
+                        <li>
+                            <p><i class="fas fa-map-marker-alt"></i><span th:text="#{footer.contact1}"></span>
+                                <br><span th:text="#{footer.contact2}"></span> <br><span th:text="#{footer.contact3}"></span> </p>
+                        </li>
+                        <li>
+                            <p><i class="fas fa-phone-square"></i><span th:text="#{footer.contact4}"></span> <a href="tel:+84-8885522">+84-888 555 22</a></p>
+                        </li>
+                        <li>
+                            <p><i class="fas fa-envelope"></i>Email: <a href="mailto:freshshop@gmail.com">freshshop@gmail.com</a></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Cart -->
+
+<!-- Start Instagram Feed  -->
+<div class="instagram-box">
+    <div class="main-instagram owl-carousel owl-theme">
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-01.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-02.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-03.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-04.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-05.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-06.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-07.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-08.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-09.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="images/instagram-img-05.jpg" alt=""/>
+                <div class="hov-in">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Instagram Feed  -->
+
+
+<!-- Start Footer  -->
+<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+
+</body>
+
+</html>

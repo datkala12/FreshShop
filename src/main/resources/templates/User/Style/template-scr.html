@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Site Icons -->
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+
+
+<!-- ALL JS FILES -->
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- ALL PLUGINS -->
+<script th:src="@{/js/jquery.superslides.min.js}"></script>
+<script th:src="@{/js/bootstrap-select.js}"></script>
+<script th:src="@{/js/inewsticker.js}"></script>
+<script th:src="@{/js/bootsnav.js.}"></script>
+<script th:src="@{/js/images-loded.min.js}"></script>
+<script th:src="@{/js/isotope.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/baguetteBox.min.js}"></script>
+<script th:src="@{/js/form-validator.min.js}"></script>
+<script th:src="@{/js/contact-form-script.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+
+<!--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script>
+
+    let currentURL = window.location.href;
+    let hasShop = currentURL.includes('shop');
+    let hasDisplay = currentURL.includes('displayDetail');
+    let hasLangEn = currentURL.includes('&&lang=en');
+    let hasLangVi = currentURL.includes('&&lang=vi');
+    let englishLink = document.getElementById('englishLink');
+    let vietnameseLink = document.getElementById('vietnameseLink');
+    if(hasDisplay || hasShop){
+      if(hasLangEn || hasLangVi){
+        if(hasLangEn){
+            englishLink.setAttribute("href",currentURL);
+            var vnLink = currentURL.replace("&&lang=en", "&&lang=vi");
+            vietnameseLink.setAttribute("href", vnLink);
+        }
+        if(hasLangVi){
+            vietnameseLink.setAttribute("href", currentURL);
+            var enLink = currentURL.replace("&&lang=vi", "&&lang=en");
+            englishLink.setAttribute("href",enLink);
+        }
+      }else{
+        let newURLEnglish = currentURL + '&&lang=en';
+        englishLink.setAttribute("href", newURLEnglish);
+        let newURLVietnamese = currentURL + '&&lang=vi';
+        vietnameseLink.setAttribute("href", newURLVietnamese);
+      }
+
+    }
+
+</script>
+
+
+</html>

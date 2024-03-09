@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<title>Fresh Shop</title>
+
+<th:block th:replace="~{Admin/Admin-style/Admin-template-css:: html}"></th:block>
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-header.html:: header}"></div>
+	<!-- End Main Top -->
+
+	<!-- Start Sidebar -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-sidebar.html:: aside}"></div>
+	<!-- End Sidebar -->
+
+	<main id="main" class="main">
+		<!--Start Page Title-->
+		<div class="pagetitle">
+			<h1 th:text="#{table.tbCustomer}"></h1>
+
+		</div>
+		<!-- End Page Title -->
+
+		<!--Start Form-->
+		<section class="section">
+			<div class="row">
+				<div class="mx-auto w-75">
+
+					<div class="card pt-5">
+						<div class="card-body">
+							<!--               <h5 class="card-title" th:text="#{table.tbCustomer}"></h5> -->
+							<h5 th:text="${message}"></h5>
+							<!-- General Form Elements -->
+							<form th:object="${customer}" id="formCustomer" method="get">
+								<!--Category ID-->
+								<div class="row mb-4" style="display: none">
+									<label for="customer_id" class="col-sm-2 col-form-label text-success">Customer
+										ID</label>
+									<div class="col-sm-10">
+										<input type="text" name="customerId" th:field="*{customerId}"
+											class="form-control" id="customer_id" readonly>
+									</div>
+									<span class="error"></span>
+								</div>
+								<!--Category Name-->
+								<div class="row mb-4">
+									<label for="customer_name" class="col-sm-2 col-form-label text-success"
+										th:text="#{table.name}"></label>
+									<div class="col-sm-10">
+										<input type="text" name="customerName"
+											th:field="*{customerName}" class="form-control"
+											id="customer_name" readonly>
+									</div>
+									<span class="error"></span>
+								</div>
+								<div class="row mb-4">
+									<label for="phone_number" class="col-sm-2 col-form-label text-success"
+										th:text="#{phoneNumber}"></label>
+									<div class="col-sm-10">
+										<input type="text" name="phoneNumber"
+											th:field="*{phoneNumber}" class="form-control"
+											id="phone_number" readonly>
+									</div>
+									<span class="error"></span>
+								</div>
+								<div class="row mb-4">
+									<label for="email" class="col-sm-2 col-form-label text-success"
+										th:text="#{email}"></label>
+									<div class="col-sm-10">
+										<input type="text" name="email" th:field="*{email}"
+											class="form-control" id="email" readonly>
+									</div>
+									<span class="error"></span>
+								</div>
+								<div class="row mb-4">
+									<label class="col-sm-2 col-form-label text-success" th:text="#{table.role}"></label>
+									<div class="col-sm-10">
+										<input type="text" name="role" th:filed="*{roles}"
+											class="form-control" id="role" readonly>
+									</div>
+									<span class="error"></span>
+								</div>
+								<div class="row mb-4">
+									<label class="col-sm-2 col-form-label text-success" id="category_name"
+										th:text="#{table.status}"></label>
+									<div class="col-sm-10">
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio"
+												th:field="*{status}" name="status" id="inlineRadio1"
+												value="Open"> <label class="form-check-label"
+												for="inlineRadio1" th:text="#{table.open}"></label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio"
+												th:field="*{status}" name="status" id="inlineRadio2"
+												value="Close"> <label class="form-check-label"
+												for="inlineRadio2" th:text="#{table.close}"></label>
+										</div>
+									</div>
+									<span class="error"></span>
+								</div>
+								<input type="hidden" name="password" th:field="*{pwd}">
+								<input type="hidden" name="sortField" th:value="${sortField}">
+								<input type="hidden" name="sortDir" th:value="${sortDir}">
+								<div class="row mb-4">
+									<div class="col-lg-2 col-ms-12"></div>
+									<div class="col-lg-10 col-ms-12 d-grid gap-2 d-md-block">
+										<button id="updateButton" class="btn btn-success"
+											formaction="/admin/updateCustomer" type="submit"
+											th:text="#{btnUpdate}" disabled="true"></button>
+										<!--                     <button class="btn btn-danger" formaction="/admin/deleteCustomer" type="submit"  th:text="#{btnDelete}"></button> -->
+										<button class="btn btn-warning" id="resetButton" type="submit"
+											th:text="#{btnReset}"></button>
+									</div>
+								</div>
+							</form>
+							<!-- End General Form Elements -->
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--      Table Customer-->
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="card pt-5">
+						<div class="card-body">
+							<!--               <h5 class="card-title"  th:text="#{table.tbCustomer}"></h5> -->
+							<!-- Table with stripped rows -->
+							<div class="row pb-4">
+								<form th:action="@{/admin/searchNameCustomer}" class="col-lg-10">
+									<div class="row w-50">
+										<div class="col-lg-11">
+											<input type="text" name="searchName" th:value="${searchName}" class="form-control"
+												placeholder="Customer Name"> <input type="hidden"
+												th:value="${sortField}" name="sortField"
+												class="form-control"> <input type="hidden"
+												th:value="${sortDir}" name="sortDir" class="form-control">
+										</div>
+										<div class="col-lg-1">
+											<button type="submit" class="btn btn-outline-primary"
+												th:text="#{btnSearch}"></button>
+										</div>
+									</div>
+								</form>
+							</div>
+							<table class="table table-striped">
+								<thead class="table-success">
+									<tr>
+										<th class="sorting" th:text="#{table.name}" scope="col">
+											<!--                     <a th:href="@{'/admin/viewCustomer/' + ${currentPage} + '?sortField=customerName&sortDir=' + ${reverseSortDir}}"  th:text="#{table.name}"></a> -->
+										</th>
+										<th class="sorting" th:text="#{phoneNumber}" scope="col">
+											<!--                     <a th:href="@{'/admin/viewCustomer/' + ${currentPage} + '?sortField=phoneNumber&sortDir=' + ${reverseSortDir}}"  th:text="#{phoneNumber}"></a> -->
+										</th>
+										<th class="sorting" th:text="#{email}" scope="col">
+											<!--                     <a th:href="@{'/admin/viewCustomer/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}"  th:text="#{email}"></a> -->
+										</th>
+										<th class="sorting" th:text="#{table.role}" scope="col">
+											<!--                     <a th:href="@{'/admin/viewCustomer/' + ${currentPage} + '?sortField=roles&sortDir=' + ${reverseSortDir}}"  th:text="#{table.role}"></a> -->
+										</th>
+										<th class="sorting" th:text="#{table.status}" scope="col">
+											<!--                     <a th:href="@{'/admin/viewCustomer/' + ${currentPage} + '?sortField=isActive&sortDir=' + ${reverseSortDir}}"  th:text="#{table.status}"></a> -->
+										</th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="customer : ${listCustomer}">
+										<td th:text="${customer.customerName}"></td>
+										<td th:text="${customer.phoneNumber}"></td>
+										<td th:text="${customer.email}"></td>
+										<td th:if="${customer.roles.roleName == 'ADMIN'}"
+											th:text="#{table.admin}"></td>
+										<td th:unless="${customer.roles.roleName == 'ADMIN'}"
+											th:text="#{table.user}"></td>
+										<td th:if="${customer.status == 'Open'}"
+											th:text="#{table.open}"></td>
+										<td th:if="${customer.status == 'Close'}"
+											th:text="#{table.close}"></td>
+										<td><a th:attr="data-id=${customer.customerId}"
+											class="editButton btn btn-outline-danger me-2"
+											onclick="enableUpdateButton()" th:text="#{btnEdit}"></a></td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="pagination justify-content-center"
+								th:if="${totalPages > 1}">
+								<ul class="pagination">
+									<li class="page-item"><a class="page-link"
+										th:if="${currentPage > 1}"
+										th:href="@{'/admin/viewCustomer/' + (${currentPage} - 1) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchName=' + ${searchName}}">&laquo;</a>
+										<span class="page-link disabled"
+										th:unless="${currentPage > 1}">&laquo;</span></li>
+
+									<li class="page-item"
+										th:each="i: ${#numbers.sequence(1, totalPages)}"
+										th:classappend="${currentPage == i} ? 'active' : ''"><a
+										class="page-link"
+										th:href="@{'/admin/viewCustomer/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchName=' + ${searchName}}">[[${i}]]</a>
+									</li>
+
+									<li class="page-item"><a class="page-link"
+										th:if="${currentPage < totalPages}"
+										th:href="@{'/admin/viewCustomer/' + (${currentPage} + 1) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchName=' + ${searchName}}">&raquo;</a>
+										<span class="page-link disabled"
+										th:unless="${currentPage < totalPages}">&raquo;</span></li>
+								</ul>
+							</div>
+							<!-- End Table with stripped rows -->
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Start Footer -->
+	<!--  <div th:replace="~{Admin/Admin-fragment/Admin-footer.html:: footer}"></div>-->
+	<!-- End Footer -->
+
+	<a href="#"
+		class="back-to-top d-flex align-items-center justify-content-center"><i
+		class="bi bi-arrow-up-short"></i></a>
+
+	<th:block th:replace="~{Admin/Admin-style/Admin-template-scr:: html}"></th:block>
+	<script>
+		var editButtons = document.getElementsByClassName("editButton");
+		for (var i = 0; i < editButtons.length; i++) {
+			editButtons[i].addEventListener("click", function(event) {
+				var customerId = event.target.getAttribute("data-id");
+
+				var row = event.target.parentNode.parentNode;
+
+				var customerName = row.cells[0].innerText;
+				var phoneNumber = row.cells[1].innerText;
+				var email = row.cells[2].innerText;
+				var role = row.cells[3].innerText;
+				var status = row.cells[4].innerText;
+
+				document.getElementById("customer_id").value = customerId;
+				document.getElementById("customer_name").value = customerName;
+				document.getElementById("phone_number").value = phoneNumber;
+				document.getElementById("email").value = email;
+				document.getElementById("role").value = role;
+				if (status === "Open") {
+					document.getElementById("inlineRadio1").checked = true;
+				} else {
+					document.getElementById("inlineRadio2").checked = true;
+				}
+
+			});
+		}
+		document.getElementById("resetButton").addEventListener("click",
+				function(event) {
+					event.preventDefault();
+					document.getElementById("formCustomer").reset();
+				});
+
+		function enableUpdateButton() {
+			// Lấy thẻ button "update" thông qua id
+			var updateButton = document.getElementById('updateButton');
+
+			// Enable button "update"
+			updateButton.disabled = false;
+		}
+	</script>
+</body>
+</html>

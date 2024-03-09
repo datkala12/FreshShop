@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<title>Fresh Shop</title>
+
+<th:block th:replace="~{Admin/Admin-style/Admin-template-css:: html}"></th:block>
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-header.html:: header}"></div>
+	<!-- End Main Top -->
+
+	<!-- Start Sidebar -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-sidebar.html:: aside}"></div>
+	<!-- End Sidebar -->
+
+	<main id="main" class="main">
+		<!-- Start Page Title-->
+		<div class="pagetitle">
+			<h1 th:text="#{table.tbDashboard}"></h1>
+
+		</div>
+		<!-- End Page Title -->
+
+		<section class="section dashboard">
+			<div class="row">
+
+				<!-- Left side columns -->
+				<div>
+					<div class="row">
+
+						<!-- Sales Card -->
+						<div class="col-xxl-4 col-md-6 col-lg-3">
+							<div class="card info-card sales-card">
+
+								<div class="card-body">
+									<h5 class="card-title" th:text="#{table.profit}"></h5>
+
+									<div class="d-flex align-items-center">
+										<div
+											class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+											<i class="bi bi-currency-dollar"></i>
+										</div>
+										<div class="ps-3">
+											<h6 class="profit" th:text="${totalAmount}"></h6>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- End Sales Card -->
+
+						<!-- Revenue Card -->
+						<div class="col-xxl-4 col-md-6 col-lg-3">
+							<div class="card info-card revenue-card">
+
+								<div class="card-body">
+									<h5 class="card-title" th:text="#{category}"></h5>
+									<div class="d-flex align-items-center">
+										<div
+											class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+											<i class="bi bi-bookmark-check"></i>
+										</div>
+										<div class="ps-3">
+											<h6 th:text="${categoryNumber}"></h6>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- End Revenue Card -->
+
+						<!-- Customers Card -->
+						<div class="col-xxl-4 col-xl-12 col-lg-3">
+
+							<div class="card info-card customers-card">
+
+								<div class="card-body">
+									<h5 class="card-title" th:text="#{table.user}"></h5>
+
+									<div class="d-flex align-items-center">
+										<div
+											class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+											<i class="bi bi-people"></i>
+										</div>
+										<div class="ps-3">
+											<h6 th:text="${totalCount} + ' users'"></h6>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+						<!-- End Customers Card -->
+					</div>
+				</div>
+				<!-- Reports -->
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title" th:text="#{table.tbReport}"></h5>
+
+							<!-- Line Chart -->
+							<div id="reportsChart"></div>
+							<!-- End Line Chart -->
+						</div>
+
+					</div>
+				</div>
+				<!-- End Reports -->
+
+				<!-- Recent Sales -->
+				<div class="col-12">
+					<div class="card recent-sales overflow-auto">
+						<div class="card-body" th:if="${listOrderReport != null}">
+							<h5 class="card-title" th:text="#{table.tbReport}"></h5>
+							<table class="table table-borderless datatable table-striped">
+								<thead class="table-success">
+									<tr>
+										<th scope="col" th:text="#{table.date}"></th>
+										<th scope="col" th:text="#{table.profit}"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="rp : ${listOrderReport}">
+										<td th:text="${rp.date}"></td>
+										<td class="profit" th:text="${rp.amount}"></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+				<!-- Top Selling -->
+			</div>
+		</section>
+	</main>
+	<!-- Start Footer -->
+	<!--     <div th:replace="~{Admin/Admin-fragment/Admin-footer.html:: footer}"></div> -->
+	<!-- End Footer -->
+
+	<a href="#"
+		class="back-to-top d-flex align-items-center justify-content-center"><i
+		class="bi bi-arrow-up-short"></i></a>
+
+	<th:block th:replace="~{Admin/Admin-style/Admin-template-scr:: html}"></th:block>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+
+	<script th:inline="javascript">
+    // Dữ liệu mẫu
+    var dateList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var countContactList = [50, 70, 90, 120, 100, 80, 60, 40, 30, 50, 70, 90];
+    var countProductList = [30, 40, 50, 60, 80, 100, 120, 90, 70, 50, 30, 20];
+
+    // Insert dummy data points at the beginning of each series
+    countContactList.unshift(0);
+    countProductList.unshift(0);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        Highcharts.chart('reportsChart', {
+            series: [{
+                name: 'Customer',
+                data: countContactList,
+                color: 'rgba(65, 84, 241, 0.8)',
+                connectNulls: true // Connect data points to the axis
+            }, {
+                name: 'Product',
+                data: countProductList,
+                color: 'rgba(255, 119, 29, 0.8)',
+                connectNulls: true // Connect data points to the axis
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            title: {
+                text: 'Report Chart (2023)'
+            },
+            xAxis: {
+                type: 'category',
+//                 categories: dateList,
+                startOnTick: false,
+                endOnTick: false, // Thêm thuộc tính này để ngăn chặn hiển thị số 12 ở cuối trục x
+                minPadding: 0
+            },
+            yAxis: {
+                title: {
+                    text: 'Count'
+                },
+                min: 0 // Set the minimum value of y-axis to 0
+            },
+            plotOptions: {
+                line: {
+                    marker: {
+                        enabled: false
+                    },
+                    lineWidth: 2 // Adjust the line width here
+                }
+            },
+            colors: ['#4154f1', '#ff771d'],
+            tooltip: {
+                xDateFormat: '%d/%m/%y'
+            }
+        });
+    });
+
+document.addEventListener("DOMContentLoaded", function () {
+    var profitElements = document.getElementsByClassName("profit");
+
+    for (var i = 0; i < profitElements.length; i++) {
+        var profitElement = profitElements[i];
+        var profitAmount = parseFloat(profitElement.textContent);
+
+        // Kiểm tra xem số liệu có phải là một số hợp lệ không trước khi định dạng
+        if (!isNaN(profitAmount)) {
+            // Định dạng số tiền theo hàng nhìn với đơn vị tiền của Việt Nam
+            var formattedProfit = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(profitAmount);
+
+            // Gán lại giá trị đã định dạng vào phần tử HTML
+            profitElement.textContent = formattedProfit;
+        }
+    }
+});
+</script>
+
+
+
+</body>
+</html>

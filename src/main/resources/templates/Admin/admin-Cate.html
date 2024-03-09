@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<title>Fresh Shop</title>
+
+<th:block th:replace="~{Admin/Admin-style/Admin-template-css:: html}"></th:block>
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-header.html:: header}"></div>
+	<!-- End Main Top -->
+
+	<!-- Start Sidebar -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-sidebar.html:: aside}"></div>
+	<!-- End Sidebar -->
+
+	<main id="main" class="main">
+		<!--Start Page Title-->
+		<div class="pagetitle">
+			<h1 th:text="#{table.tbCate}"></h1>
+		</div>
+		<!-- End Page Title -->
+
+		<!--Start Form-->
+		<section class="section">
+			<div class="row">
+				<div class="mx-auto w-75">
+
+					<div class="card">
+						<div class="card-body pt-5">
+							<!--                         <h5 class="card-title" th:text="#{table.tbCate}"></h5> -->
+							<h5 style="color: green !important;" th:text="${message}"></h5>
+							<form id="formCate" th:action="@{/admin}" method="POST">
+								<!--Category ID-->
+								<div class="row mb-4" style="display: none">
+									<label for="category_id" class="col-sm-2 col-form-label ">Category
+										ID</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="cateId"
+											id="category_id" readonly>
+									</div>
+
+								</div>
+								<!--Category Name-->
+								<div class="row mb-4">
+									<label for="category_name" class="col-sm-2 col-form-label text-success"
+										th:text="#{table.name}"></label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="categoryName"
+											id="category_name">
+									</div>
+
+								</div>
+								
+								<div class="row mb-4">
+									<div class="col-lg-2 col-ms-12"></div>
+									<div class="col-lg-10 col-ms-12 d-grid gap-2 d-md-block">
+										<button class="btn btn-primary" id="btnCreate"
+											formaction="/admin/createCate" type="submit"
+											th:text="#{btnCreate}"></button>
+										<button class="btn btn-success" id="btnUpdate"
+											formaction="/admin/updateCate" type="submit" disabled
+											th:text="#{btnUpdate}"></button>
+										<!--                                     <button class="btn btn-danger" id="btnDelete" formaction="/admin/deleteCate" -->
+										<!--                                             type="submit" -->
+										<!--                                             disabled th:text="#{btnDelete}"> -->
+										<!--                                     </button> -->
+										<button class="btn btn-warning" id="btnReset" type="button"
+											th:text="#{btnReset}"></button>
+									</div>
+								</div>
+							</form>
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+			</div>
+			<!--    Table Category-->
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="card pt-5">
+						<div class="card-body">
+							<!--                         <h5 class="card-title" th:text="#{table.tbCate}"></h5> -->
+							<!-- Table with stripped rows -->
+							<div class="row pb-4">
+								<form class="col-lg-10" action="/admin/category">
+									<p style="display: none" id="keywords" th:text="${keyword}"></p>
+									<div class="row w-50">
+										<div class="col-lg-9">
+											<input type="text" class="form-control" name="keyword"
+												th:value="${keyword}" placeholder="Category Name">
+										</div>
+										<input type="hidden" name="pageSize" th:value="${pageSize}" />
+										<div class="col-lg-1">
+											<button type="submit" class="btn btn-outline-primary"
+												th:text="#{btnSearch}"></button>
+										</div>
+									</div>
+								</form>
+								<!--                             <div class="col-lg-2"> -->
+								<!--                                 <div class="input-group mb-3 d-grid gap-2 d-md-flex justify-content-md-end"> -->
+								<!--                                     <label class="input-group-text" for="inputGroupSelect01">Show -->
+								<!--                                         <select class="form-select ms-2" id="inputGroupSelect01" -->
+								<!--                                                 onchange="redirectShowToUrl()"> -->
+								<!--                                             <option value="10" th:selected="${pageSize == 10}">10</option> -->
+								<!--                                             <option value="25" th:selected="${pageSize == 25}">25</option> -->
+								<!--                                             <option value="50" th:selected="${pageSize == 50}">50</option> -->
+								<!--                                             <option value="100" th:selected="${pageSize == 100}">100</option> -->
+								<!--                                         </select> -->
+								<!--                                     </label> -->
+								<!--                                 </div> -->
+								<!--                             </div> -->
+							</div>
+
+
+							<table class="table table-striped">
+								<thead class="table-success">
+									<tr>
+										<th scope="col" style="display: none">Category id</th>
+										<th th:text="#{table.name}" scope="col">
+<!-- 										<a -->
+<!-- 											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${currentPage}, sortField='categoryName', sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'})}" -->
+<!-- 											th:text="#{table.name}"></a> -->
+											</th>
+										<th th:text="#{table.createdAt}" scope="col">
+<!-- 										<a -->
+<!-- 											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${currentPage}, sortField='createdAt', sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'})}" -->
+<!-- 											th:text="#{table.createdAt}"></a> -->
+											</th>
+										<th th:text="#{table.createdBy}" scope="col">
+<!-- 										<a -->
+<!-- 											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${currentPage}, sortField='createdBy', sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'})}" -->
+<!-- 											th:text="#{table.createdBy}"></a> -->
+											</th>
+										<th th:text="#{table.updatedAt}" scope="col">
+<!-- 										<a -->
+<!-- 											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${currentPage}, sortField='updatedAt', sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'})}" -->
+<!-- 											th:text="#{table.updatedAt}"></a> -->
+											</th>
+										<th th:text="#{table.updatedBy}" scope="col">
+<!-- 										<a -->
+<!-- 											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${currentPage}, sortField='updatedBy', sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'})}" -->
+<!-- 											th:text="#{table.updatedBy}"></a> -->
+											</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="category : ${page.content}">
+										<td scope="row" th:text="${category.categoryId}"
+											style="display: none"></td>
+										<td th:text="${category.categoryName}"></td>
+										<td class="formatDate" th:text="${category.createdAt}"></td>
+										<td th:text="${category.createdBy}"></td>
+										<td th:text="${category.updatedAt}"></td>
+										<td th:text="${category.updatedBy}"></td>
+										<td>
+											<button class="btn btn-outline-danger editButton"
+												th:attr="data-id=${category.categoryId}"
+												th:text="#{btnEdit}"></button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div class="pagination-style text-center m-5 "
+								th:if="${totalPages > 1}">
+								<nav aria-label="Page navigation example">
+									<ul
+										class="pagination d-flex justify-content-center align-items-center">
+										<li class="page-item" th:if="${page.totalPages > 0}"
+											th:classappend="${page.number == 0} ? 'disabled'"><a
+											class="page-link"
+											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${page.number - 1})}"
+											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+										</a></li>
+
+										<li class="page-item" th:if="${page.totalPages > 0}"
+											th:classappend="${currentPage == 0 ? 'active' : ''}"><a
+											class="page-link"
+											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=0)}">1</a></li>
+
+										<li class="page-item" th:if="${page.totalPages > 2}"
+											th:each="pageNumber : ${#numbers.sequence(2, page.totalPages - 1)}"
+											th:classappend="${currentPage == pageNumber - 1 ? 'active' : ''}"><a
+											class="page-link"
+											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${pageNumber-1})}">
+												<span th:text="${pageNumber}"></span>
+										</a></li>
+
+										<li class="page-item" th:if="${page.totalPages > 1}"
+											th:classappend="${currentPage == page.totalPages - 1 ? 'active' : ''}"><a
+											class="page-link"
+											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${page.totalPages -1})}"><span
+												th:text="${page.totalPages}"></span></a></li>
+
+										<li class="page-item" th:if="${page.totalPages > 0}"
+											th:classappend="${page.number == page.totalPages - 1} ? 'disabled'"><a
+											class="page-link"
+											th:href="@{/admin/category(pageSize=${pageSize}, currentPage=${currentPage + 1})}"
+											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+										</a></li>
+									</ul>
+								</nav>
+							</div>
+							<!-- End Table with stripped rows -->
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+		</section>
+	</main>
+
+
+	<a href="#"
+		class="back-to-top d-flex align-items-center justify-content-center"><i
+		class="bi bi-arrow-up-short"></i></a>
+
+	<th:block th:replace="~{Admin/Admin-style/Admin-template-scr:: html}"></th:block>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script>
+		function redirectShowToUrl() {
+			var value = document.getElementById("inputGroupSelect01").value;
+			var keywords = document.getElementById("keywords").textContent;
+			var url = "/admin/category?pageSize=" + value + "&keyword="
+					+ encodeURIComponent(keywords);
+			window.location.href = url;
+		}
+		$(document).ready(
+				function() {
+					$('.editButton').click(
+							function() {
+								var categoryId = $(this).data('id');
+								var categoryName = $(this).closest('tr').find(
+										'td:nth-child(2)').text();
+
+								$('#category_id').val(categoryId);
+								$('#category_name').val(categoryName);
+
+								$('#btnCreate').prop('disabled', true);
+								$('#btnUpdate').prop('disabled', false);
+								$('#btnDelete').prop('disabled', false);
+							});
+
+					$('#btnReset').click(function() {
+						$('#btnCreate').prop('disabled', false);
+						$('#formCate')[0].reset();
+						$('#btnUpdate').prop('disabled', true);
+						$('#btnDelete').prop('disabled', true);
+					});
+				});
+
+		// Lấy tất cả các phần tử có class là 'formatDate'
+		var dateElements = document.querySelectorAll('.formatDate');
+
+		// Định dạng ngày tháng năm cho mỗi phần tử
+		dateElements.forEach(function(element) {
+			// Lấy giá trị ngày tháng từ textContent của phần tử
+			var dateValue = element.textContent;
+
+			// Chuyển đổi giá trị ngày tháng sang đối tượng Date
+			var date = new Date(dateValue);
+
+			// Định dạng ngày tháng năm theo định dạng Việt Nam
+			var formattedDate = date.toLocaleString('vi-VN', {
+				timeZone : 'Asia/Ho_Chi_Minh'
+			});
+
+			// Gán lại giá trị đã định dạng vào textContent của phần tử
+			element.textContent = formattedDate;
+		});
+
+		// Gọi hàm khi trang đã tải xong
+		$(document).ready(function() {
+			formatAndSetDate();
+		});
+	</script>
+
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+  <footer>
+    <div class="footer-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="footer-top-box">
+              <h3 th:text="#{footer.business}"></h3>
+              <ul class="list-time">
+                <li th:text="#{footer.b_time}"></li> <li th:text="#{footer.b_time1}"></li> <li th:text="#{footer.b_time2}"></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="footer-top-box">
+              <h3 th:text="#{footer.news}"></h3>
+              <form class="newsletter-box">
+                <div class="form-group">
+                  <input class="" type="email" name="Email" th:placeholder="#{placeholder.email}" />
+                  <i class="fa fa-envelope"></i>
+                </div>
+                <button class="btn hvr-hover" type="submit" th:text="#{btnSubmit}"></button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="footer-top-box">
+              <h3 th:text="#{footer.social}"></h3>
+              <p th:text="#{footer.social_desc}"></p>
+              <ul>
+                <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="footer-widget">
+              <h4 th:text="#{footer.about}"></h4>
+              <p th:text="#{footer.about1}"></p>
+              <p th:text="#{footer.about2}"></p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="footer-link">
+              <h4 th:text="#{footer.info}"></h4>
+              <ul>
+                <li><a th:href="@{/home}" th:text="#{menu.home}"></a></li>
+                <li><a th:href="@{/about}" th:text="#{menu.about}"></a></li>
+                <li><a th:href="@{/shop/page/1?cateId=all&&searchName=none}" th:text="#{menu.shop}"></a></li>
+                <li><a href="#" th:text="#{footer.info1}"></a></li>
+                <li><a href="#" th:text="#{footer.info2}"></a></li>
+                <li><a href="#" th:text="#{footer.info3}"></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="footer-link-contact">
+              <h4 th:text="#{footer.contact_us}"></h4>
+              <ul>
+                <li>
+                  <p><i class="fas fa-map-marker-alt"></i><span th:text="#{footer.contact1}"></span>
+                    <br><span th:text="#{footer.contact2}"></span> <br><span th:text="#{footer.contact3}"></span> </p>
+                </li>
+                <li>
+                  <p><i class="fas fa-phone-square"></i><span th:text="#{footer.contact4}"></span> <a href="tel:+84-8885522">+84-888 555 22</a></p>
+                </li>
+                <li>
+                  <p><i class="fas fa-envelope"></i>Email: <a href="mailto:freshshop@gmail.com">freshshop@gmail.com</a></p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer  -->
+
+  <!-- Start copyright  -->
+  <div class="footer-copyright">
+    <p class="footer-company">All Rights Reserved. &copy; 2018 <a href="#">ThewayShop</a> Design By :
+      <a href="https://html.design/">html design</a></p>
+  </div>
+  <!-- End copyright  -->
+</html>

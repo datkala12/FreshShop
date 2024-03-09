@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    <title>Fresh Shop</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <th:block th:replace="~{User/Style/template-css :: html}"></th:block>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!-- Start Main Top -->
+<div th:replace="~{User/fragment/header.html :: header}"></div>☺
+<!-- End Main Top -->
+
+<!-- Start Top Search -->
+<div class="top-search">
+    <div class="container">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+        </div>
+    </div>
+</div>
+<!-- End Top Search -->
+
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 th:text="#{menu.register}"></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row new-account-login">
+            <div class="mx-auto mb-3 w-50">
+                <div class="title-left">
+                    <h3 th:text="#{register.title}"></h3>
+                </div>
+                <form id="formRegister" th:action="@{/register}" th:method="POST" th:object="${customer}">
+                    <div class="form-row mb-3 flex-column">
+                        <div class="mb-2">
+                            <label for="InputName" class="mb-0" th:text="#{fullName}"></label>
+                            <input type="text" class="form-control" name="customerName" id="InputName"
+                                   th:field="*{customerName}">
+                            <span th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"
+                                  style="color:red !important;"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="InputLastname" class="mb-0" th:text="#{phoneNumber}"></label>
+                            <input type="text" class="form-control" name="phoneNumber" id="InputLastname"
+                                   th:field="*{phoneNumber}">
+                            <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
+                                  style="color:red !important"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="InputEmail1" class="mb-0" th:text="#{email}"></label>
+                            <input type="email" class="form-control" name="email" id="InputEmail1"
+                                   th:field="*{email}">
+                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                  style="color:red !important"></span>
+                            <span th:if="${#fields.hasErrors('email') && !#fields.hasErrors('confirmEmail')}" th:errors="*{email}" style="color:red !important"></span>
+
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="InputEmail2" class="mb-0" th:text="#{confirmEmail}"></label>
+                            <input type="email" class="form-control" name="confirmEmail" id="InputEmail2"
+                                   th:field="*{confirmEmail}">
+                            <span th:if="${#fields.hasErrors('confirmEmail')}" th:errors="*{confirmEmail}"
+                                  style="color:red !important"></span>
+                            <span th:if="${emailMismatch != null}" th:text="${emailMismatch}"
+                                  style="color:red !important"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="password" class="mb-0" th:text="#{password}"></label>
+                            <input type="password" class="form-control" name="pwd" id="password"
+                                   th:field="*{pwd}">
+
+                            <span th:if="${#fields.hasErrors('pwd')}" th:errors="*{pwd}"
+                                  style="color:red !important"></span>
+
+
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="confirmPwd" class="mb-0" th:text="#{confirmPassword}"></label>
+
+                            <input type="password" class="form-control" name="confirmPwd" id="confirmPwd"
+                                   th:field="*{confirmPwd}">
+                            <span th:if="${#fields.hasErrors('confirmPwd')}" th:errors="*{confirmPwd}"
+                                  style="color:red !important"></span>
+                            <span th:if="${passwordMismatch != null}" th:text="${passwordMismatch}"
+                                  style="color:red !important"></span>
+
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn hvr-hover" th:text="#{btnRegister}"></button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+
+</body>
+
+</html>
+

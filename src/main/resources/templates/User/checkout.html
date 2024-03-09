@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Site Metas -->
+<title>Fresh shop</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Site Icons -->
+<th:block th:replace="~{User/Style/template-css :: html}"></th:block>
+
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{User/fragment/header.html :: header}"></div>
+	<!-- End Main Top -->
+
+
+
+	<!-- Start All Title Box -->
+	<div class="all-title-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 th:text="#{checkout}"></h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End All Title Box -->
+
+	<!-- Start Cart  -->
+	<div class="cart-box-main">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-sm-6 col-lg-6 mb-3">
+					<h3 th:text="${message}"></h3>
+					<div class="checkout-address">
+						<div class="title-left">
+							<h3 th:text="#{checkout.bill}"></h3>
+						</div>
+						<form id="orderForm" class="needs-validation" action="/placeOrder"
+							th:object="${customer}">
+							<div class="row"></div>
+							<div class="mb-3">
+								<label for="username" th:text="#{checkout.name}"></label>
+								<div class="input-group">
+									<input type="text" class="form-control" id="username"
+										th:value="*{customerName}" readonly>
+								</div>
+							</div>
+							<div class="mb-3">
+								<label for="email" th:text="#{checkout.email}"></label> <input
+									type="email" class="form-control" id="email"
+									th:value="*{email}" readonly>
+							</div>
+							<div class="mb-3">
+								<label for="phoneNumber" th:text="#{checkout.phone}"></label> <input
+									type="text" class="form-control" id="phoneNumber"
+									th:value="*{phoneNumber}" readonly>
+							</div>
+							<!--                             <div class="mb-3"> -->
+							<!--                                 <label for="address" th:text="#{checkout.address}"></label> -->
+							<!--                                 <select class="form-control" id="address"  required > -->
+							<!--                                     <option th:each="addressOption : ${addressOptions}" th:value="${addressOption}" -->
+							<!--                                             th:text="${addressOption}"></option> -->
+							<!--                                 </select> -->
+							<!--                                  <input type="hidden" name="selectedAddress" id="selectedAddress" value=""> -->
+							<!--                             </div> -->
+						</form>
+						<div class="mb-3">
+							<label for="phoneNumber" th:text="#{checkout.address}"></label> <input
+								type="text" class="form-control" id="address">
+							<p class="text-danger" th:text="${message}"></p>
+						</div>
+						<span th:each="addressOption : ${addressOptions}"> <input
+							name="adr" type="radio" th:value="${addressOption}"
+							onclick="setAddress(this)"> <label
+							th:text="${addressOption}"></label> <br />
+						</span>
+
+						<hr class="mb-4">
+
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<div class="payment-icon">
+									<ul>
+										<li><img class="img-fluid"
+											src="images/payment-icon/1.png" alt=""></li>
+										<li><img class="img-fluid"
+											src="images/payment-icon/2.png" alt=""></li>
+										<li><img class="img-fluid"
+											src="images/payment-icon/3.png" alt=""></li>
+										<li><img class="img-fluid"
+											src="images/payment-icon/5.png" alt=""></li>
+										<li><img class="img-fluid"
+											src="images/payment-icon/7.png" alt=""></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<hr class="mb-1">
+						</form>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-6 mb-3">
+					<div class="row">
+						<div class="col-md-12 col-lg-12"></div>
+						<div class="col-md-12 col-lg-12">
+							<div class="odr-box">
+								<div class="title-left">
+									<h3 th:text="#{checkout.cart}"></h3>
+								</div>
+								<div class="rounded p-2 bg-light">
+									<div class="media mb-2 border-bottom"
+										th:each="product : ${cartProducts}">
+										<div class="media-body">
+											<a name="productName" href="detail.html"
+												th:text="${product.productName}"></a>
+											<div class="small text-muted">
+												<a>Price: </a> <a><span class="formatPrice"
+													th:text="${product.price}"></span>/1Kg</a><span class="mx-2">|</span><a
+													name="productQuantity"
+													th:text="'Qty: ' +  ${product.quantity}"></a> <span
+													class="mx-2">|</span> <a>Subtotal: </a> <a
+													class="formatPrice" name="subAmount"
+													th:text="${product.quantity * product.price}"></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="order-box">
+								<div class="title-left">
+									<h3 th:text="#{checkout.order}"></h3>
+								</div>
+								<hr class="my-1">
+								<div class="d-flex">
+									<h4 th:text="#{checkout.subTotal}"></h4>
+									<div class="ml-auto font-weight-bold formatPrice"
+										th:text="${subtotalAmount}"></div>
+								</div>
+								<div class="d-flex">
+									<h4 th:text="#{checkout.discount}+' (10%)'"></h4>
+									<div class="ml-auto font-weight-bold formatPrice"
+										th:text="${discount}"></div>
+								</div>
+								<hr class="my-1">
+								<div class="d-flex">
+									<h4 th:text="#{checkout.shipping}"></h4>
+									<div class="ml-auto font-weight-bold"
+										th:text="#{checkout.free}"></div>
+								</div>
+								<hr>
+								<div class="d-flex gr-total">
+									<h5 th:text="#{checkout.total}"></h5>
+									<div class="ml-auto h5 formatPrice" th:text="${total}"></div>
+								</div>
+								<hr>
+							</div>
+						</div>
+						<!--                         <div class="col-12 d-flex shopping-box"> <a th:href="@{/placeOrder}" class="ml-auto btn hvr-hover" th:text="#{btnPlaceOrder}">Place Order</a> </div> -->
+						<div class="col-12 d-flex shopping-box" onclick="submitForm()">
+							<a href="#" class="ml-auto btn hvr-hover"
+								th:text="#{btnPlaceOrder}">Place Order</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- End Cart -->
+
+
+
+
+	<!-- Start Footer  -->
+	<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+	<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+
+	<script>
+		function submitForm() {
+
+			// Get the value of the "address" field
+			var addressValue = document.getElementById("address").value;
+
+			// Now you can use the addressValue as needed, for example, you can log it to the console
+			console.log("Address selected:", addressValue);
+
+			// If you want to include the address value in the form submission, you can create a hidden input field
+			var hiddenInput = document.createElement("input");
+			hiddenInput.type = "hidden";
+			hiddenInput.name = "selectedAddress";
+			hiddenInput.value = addressValue;
+			document.getElementById("orderForm").appendChild(hiddenInput);
+
+			// Lấy form bằng ID
+			var form = document.getElementById('orderForm');
+			// Gọi hàm submit() để submit form
+			form.submit();
+		}
+
+		function setAddress(element) {
+			var value = element.value; // Lấy giá trị trực tiếp từ phần tử
+			document.getElementById('address').value = value;
+		}
+
+		// Hàm xử lý định dạng giá trị và gán lại vào phần tử
+		function formatAndSetPrice() {
+			// Lặp qua tất cả các phần tử có class 'product-price'
+			$('.formatPrice').each(
+					function() {
+						// Lấy giá trị từ phần tử b
+						var priceElement = $(this);
+						var currentPrice = priceElement.text();
+
+						// Định dạng giá trị theo hàng nghìn (ví dụ)
+						var formattedPrice = Number(currentPrice)
+								.toLocaleString('vi-VN', {
+									style : 'currency',
+									currency : 'VND',
+									minimumFractionDigits : 0,
+									maximumFractionDigits : 0
+								});
+
+						// Gán lại giá trị vào phần tử
+						priceElement.text(formattedPrice);
+					});
+		}
+
+		// Gọi hàm khi trang đã tải xong
+		$(document).ready(function() {
+			formatAndSetPrice();
+		});
+	</script>
+
+</body>
+
+</html>

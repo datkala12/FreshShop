@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Site Metas -->
+<title>Fresh Shop</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<th:block th:replace="~{User/Style/template-css :: html}"></th:block>
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+	<div th:replace="~{User/fragment/header.html :: header}"></div>
+	<!-- Start Top Search -->
+	<div class="top-search">
+		<div class="container">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-search"></i></span>
+				<input type="text" class="form-control" placeholder="Search">
+				<span class="input-group-addon close-search"><i
+					class="fa fa-times"></i></span>
+			</div>
+		</div>
+	</div>
+	<!-- End Top Search -->
+
+	<!-- Start All Title Box -->
+	<div class="all-title-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 th:text="#{profile.title}"></h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End All Title Box -->
+
+	<!-- Start My Account  -->
+	<div class="my-account-box-main">
+		<div class="container">
+			<div class="row new-account-login">
+				<div class="mx-auto mb-3 w-50 col-lg-6">
+					<div class="title-left">
+						<h3 th:text="#{profile.update}"></h3>
+					</div>
+					<h3 th:text="${message}"></h3>
+					<form id="formRegister" th:action="@{/updateProfile}"
+						th:method="POST" th:object="${profile}">
+						<div class="input-form mb-3">
+
+							<label for="name" class="mb-0" th:text="#{profile.fullName}"></label>
+							<input type="text" class="form-control" name="name" id="name"
+								th:field="*{name}"> <span
+								th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								style="color: red !important;"></span>
+						</div>
+
+						<div class="input-form mb-3">
+							<label for="InputLastname" class="mb-0"
+								th:text="#{profile.phoneNumber}"></label> <input type="text"
+								class="form-control" id="InputLastname" name="phoneNumber"
+								th:field="*{phoneNumber}"> <span
+								th:if="${#fields.hasErrors('phoneNumber')}"
+								th:errors="*{phoneNumber}" style="color: red !important"></span>
+						</div>
+						<div class="input-form mb-3">
+							<label for="InputEmail1" class="mb-0" th:text="#{profile.email}"></label>
+							<input type="email" class="form-control" name="email"
+								id="InputEmail1" th:field="*{email}"> <span
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								style="color: red !important"></span>
+						</div>
+						<div class="input-form mb-3">
+							<label for="InputEmail1" class="mb-0"
+								th:text="#{profile.address1}"></label> <input type="text"
+								class="form-control" id="InputEmail2" name="address1"
+								th:field="*{address1}"> <span
+								th:if="${#fields.hasErrors('address1')}" th:errors="*{address1}"
+								style="color: red !important"></span>
+						</div>
+						<div class="input-form mb-3">
+							<label for="address2" class="mb-0" th:text="#{profile.address2}"></label>
+							<input type="text" class="form-control" name="address"
+								id="address2" th:field="*{address2}">
+							<!--                             <label for="city" class="mb-0" th:text="#{profile.city}"></label> -->
+							<!--                             <input type="text" class="form-control" name="city" id="city" -->
+							<!--                                    th:field="*{city}"> -->
+							<!--                             <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" -->
+							<!--                                   style="color:red !important"></span> -->
+						</div>
+						<!--                         <div class="input-form mb-3"> -->
+						<!--                             <label for="state" class="mb-0" th:text="#{profile.state}"></label> -->
+						<!--                             <input type="text" class="form-control" name="state" -->
+						<!--                                    id="state" -->
+						<!--                                    th:field="*{state}"> -->
+						<!--                             <span th:if="${#fields.hasErrors('state')}" -->
+						<!--                                   th:errors="*{state}" -->
+						<!--                                   style="color:red !important"></span> -->
+						<!--                         </div> -->
+						<div class="input-form mb-3">
+							<label for="zipCode" class="mb-0" th:text="#{profile.zipCode}"></label>
+							<input type="text" class="form-control" name="zipCode"
+								id="zipCode" th:field="*{zipCode}"> <span
+								th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"
+								style="color: red !important"></span>
+						</div>
+						<button type="submit" class="btn hvr-hover" th:text="#{btnUpdate}">
+						</button>
+					</form>
+				</div>
+
+				<div class="mx-auto mb-3 w-50 col-lg-6">
+					<div class="title-left">
+						<h3>Change Password</h3>
+					</div>
+					<h3 th:text="${ers}"></h3>
+					<form id="formChangePassword" th:action="@{/changePassword}"
+						th:method="POST">
+						<div class="input-form mb-3">
+							<label for="currentPassword" class="mb-0">Current
+								Password</label> <input type="password" class="form-control"
+								id="currentPassword" name="currentPassword" required>
+						</div>
+
+						<div class="input-form mb-3">
+							<label for="newPassword" class="mb-0">New Password</label> <input
+								type="password" class="form-control" id="newPassword"
+								name="newPassword" required>
+						</div>
+
+						<div class="input-form mb-3">
+							<label for="confirmPassword" class="mb-0">Confirm
+								Password</label> <input type="password" class="form-control"
+								id="confirmPassword" name="confirmPassword" required>
+						</div>
+
+						<button type="button" class="btn hvr-hover"
+							onclick="changePassword()">Change</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- End My Account -->
+
+	<!-- Start Instagram Feed  -->
+	<div class="instagram-box">
+		<div class="main-instagram owl-carousel owl-theme">
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-01.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-02.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-03.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-04.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-05.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-06.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-07.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-08.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-09.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="ins-inner-box">
+					<img src="images/instagram-img-05.jpg" alt="" />
+					<div class="hov-in">
+						<a href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Instagram Feed  -->
+
+
+	<!-- Start Footer  -->
+	<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+	<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+	<script>
+		function changePassword() {
+			var currentPassword = $("#currentPassword").val();
+			var newPassword = $("#newPassword").val();
+			var confirmPassword = $("#confirmPassword").val();
+
+			// Gửi dữ liệu form đến server bằng Ajax
+			$.ajax({
+				type : "POST",
+				url : "/changePassword",
+				data : {
+					currentPassword : currentPassword,
+					newPassword : newPassword,
+					confirmPassword : confirmPassword
+				},
+				success : function(response) {
+					// Hiển thị thông báo từ server
+					if (response.error) {
+						// Xử lý lỗi
+						$("#ers").text(response.error);
+					} else if (response.message) {
+						// Xử lý thành công
+						$("#success").text(response.message);
+					}
+				},
+				error : function(error) {
+					// Xử lý lỗi nếu có
+					console.error("Error:", error);
+				}
+			});
+		}
+	</script>
+
+
+</body>
+
+</html>

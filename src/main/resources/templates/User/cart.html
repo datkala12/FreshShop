@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Site Metas -->
+<title>Fresh Shop</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Site Icons -->
+<th:block th:replace="~{User/Style/template-css:: html}"></th:block>
+
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{User/fragment/header.html :: header}"></div>
+	<!-- End Main Top -->
+
+
+
+
+	<!-- Start All Title Box -->
+	<div class="all-title-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 th:text="#{cart}"></h2>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End All Title Box -->
+
+	<!-- Start Cart  -->
+	<div class="cart-box-main" th:if="${cartProducts != null}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="table-main table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th th:text="#{table.img}"></th>
+									<th th:text="#{table.productName}"></th>
+									<th th:text="#{table.price}"></th>
+									<th th:text="#{table.quantity}"></th>
+									<th th:text="#{table.total}"></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="product : ${cartProducts}"
+									th:id="'product-' + ${product.productId}">
+									<td class="thumbnail-img"><img
+										th:src="${product.product_img}"
+										style="height: 70px; width: 70px;" alt="Product Image">
+									</td>
+									<td class="name-pr" th:text="${product.productName}"></td>
+									<td><span class="price-pr price"
+										th:text="${product.price}"></span>/1Kg</td>
+									<td class="quantity-buttons">
+										<button
+											th:onclick="'decreaseQuantity(\'' + ${product.productId} + '\')'"
+											style="background: #b0b435; width: 25px">-</button> <span
+										th:id="'quantity-' + ${product.productId}"
+										th:text="${product.quantity}" style="padding: 5px;"></span>
+										<button
+											th:onclick="'increaseQuantity(\'' + ${product.productId} + '\')'"
+											style="background: #b0b435; width: 25px">+</button>
+									</td>
+									<td class="price" th:id="'amount-' + ${product.productId}"
+										th:text="${product.price * product.quantity}"></td>
+									<td class="remove-pr" style="cursor: pointer;"><a
+										class="deleteItem text-danger"
+										th:onclick="'deleteItemInCard(\'' + ${product.productId} + '\')'">
+											<i class="fas fa-times"></i>
+									</a></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row my-5">
+				<div class="col-lg-8 col-sm-12"></div>
+				<div class="col-lg-4 col-sm-12">
+					<div class="order-box">
+						<h3 th:text="#{cart.order}"></h3>
+						<div class="d-flex gr-total">
+							<h5 th:text="#{cart.grandTotal}"></h5>
+							<div class="ml-auto h5 price" id="totalAmount"
+								th:text="${totalAmount}"></div>
+						</div>
+						<hr>
+					</div>
+				</div>
+				<div class="col-12 d-flex shopping-box">
+					<a th:href="@{/checkout}" class="ml-auto btn hvr-hover"
+						th:text="#{btnCheckOut}"></a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="cart-box-main text-center"
+		th:unless="${cartProducts != null}">
+		<h2 th:if="${message != nul}" th:text="${message}"></h2>
+		<h2 th:unless="${message != null}">No Items in Cart</h2>
+
+		<div class="mb-3">
+			<a th:href="@{/shop/page/1?cateId=all&&searchName=none}"
+				class="btn hvr-hover" th:text="#{home.back}"></a>
+		</div>
+	</div>
+
+	<!-- End Cart -->
+
+	<!-- End Instagram Feed  -->
+
+
+	<!-- Start Footer  -->
+	<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+
+	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+	<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+
+	<script type="text/javascript">
+		function deleteItemInCard(productId) {
+			console.log(productId);
+			$.ajax({
+				url : "/deleteItemInCard",
+				type : "GET",
+				data : {
+					productId : productId
+				},
+				success : function(response) {
+					// Xóa hàng chứa sản phẩm khỏi giao diện
+					$("#product-" + productId).remove();
+
+					// Hiển thị thông báo xóa thành công
+					var message = response.message;
+					var itemInCart = response.itemInCart;
+					var totalAmount = response.totalAmount;
+
+					var totalAmountElement = document
+							.getElementById('totalAmount');
+
+					var formattedPrice = Number(totalAmount).toLocaleString(
+							'vi-VN', {
+								style : 'currency',
+								currency : 'VND',
+								minimumFractionDigits : 0,
+								maximumFractionDigits : 0
+							});
+					totalAmountElement.textContent = formattedPrice;
+
+					// Display a success toast message
+					toastr.success(message, "Success", {
+						positionClass : "toast-top-right"
+					});
+
+					// Update the itemInCart value in the UI if needed
+					if (itemInCart !== undefined) {
+						$("#itemInCart").text(itemInCart);
+					}
+				},
+				error : function(xhr, status, error) {
+					// Hiển thị thông báo lỗi
+					console.log(error);
+					toastr.error("Failed", "Error", {
+						positionClass : "toast-top-right"
+					});
+				}
+			});
+		}
+
+		function decreaseQuantity(productId) {
+			console.log(productId);
+			$.ajax({
+				url : "/decreaseQuantity",
+				type : "POST",
+				data : {
+					productId : productId
+				},
+				success : function(response) {
+					console.log(response);
+					var totalAmount = response.totalAmount;
+					var quantity = response.quantity;
+					var amount = response.amount;
+
+					var totalAmountElement = document
+							.getElementById('totalAmount');
+					var quantityElement = document.getElementById('quantity-'
+							+ productId);
+					var amountElement = document.getElementById('amount-'
+							+ productId);
+
+					var formattedPrice1 = Number(totalAmount).toLocaleString(
+							'vi-VN', {
+								style : 'currency',
+								currency : 'VND',
+								minimumFractionDigits : 0,
+								maximumFractionDigits : 0
+							});
+					var formattedPrice2 = Number(amount).toLocaleString(
+							'vi-VN', {
+								style : 'currency',
+								currency : 'VND',
+								minimumFractionDigits : 0,
+								maximumFractionDigits : 0
+							});
+
+					totalAmountElement.textContent = formattedPrice1;
+					quantityElement.textContent = quantity;
+					amountElement.textContent = formattedPrice2;
+
+					function formatNumber(number) {
+						return Number(number).toLocaleString('vi-VN'); // Chọn ngôn ngữ và định dạng theo ý muốn
+					}
+				},
+				error : function(xhr, status, error) {
+				}
+			});
+		}
+
+		function increaseQuantity(productId) {
+			console.log(productId);
+			$.ajax({
+				url : "/increaseQuantity",
+				type : "POST",
+				data : {
+					productId : productId
+				},
+				success : function(response) {
+					console.log(response);
+					var totalAmount = response.totalAmount;
+					var quantity = response.quantity;
+					var amount = response.amount;
+
+					var totalAmountElement = document
+							.getElementById('totalAmount');
+					var quantityElement = document.getElementById('quantity-'
+							+ productId);
+					var amountElement = document.getElementById('amount-'
+							+ productId);
+
+					var formattedPrice1 = Number(totalAmount).toLocaleString(
+							'vi-VN', {
+								style : 'currency',
+								currency : 'VND',
+								minimumFractionDigits : 0,
+								maximumFractionDigits : 0
+							});
+					var formattedPrice2 = Number(amount).toLocaleString(
+							'vi-VN', {
+								style : 'currency',
+								currency : 'VND',
+								minimumFractionDigits : 0,
+								maximumFractionDigits : 0
+							});
+
+					totalAmountElement.textContent = formattedPrice1;
+					quantityElement.textContent = quantity;
+					amountElement.textContent = formattedPrice2;
+
+				},
+				error : function(xhr, status, error) {
+				}
+			});
+		}
+
+		// Hàm xử lý định dạng giá trị và gán lại vào phần tử
+		function formatAndSetPrice() {
+			// Lặp qua tất cả các phần tử có class 'product-price'
+			$('.price').each(
+					function() {
+						// Lấy giá trị từ phần tử b
+						var priceElement = $(this);
+						var currentPrice = priceElement.text();
+
+						// Định dạng giá trị theo hàng nghìn (ví dụ)
+						var formattedPrice = Number(currentPrice)
+								.toLocaleString('vi-VN', {
+									style : 'currency',
+									currency : 'VND',
+									minimumFractionDigits : 0,
+									maximumFractionDigits : 0
+								});
+
+						// Gán lại giá trị vào phần tử
+						priceElement.text(formattedPrice);
+					});
+		}
+
+		// Gọi hàm khi trang đã tải xong
+		$(document).ready(function() {
+			formatAndSetPrice();
+		});
+	</script>
+
+</body>
+
+</html>

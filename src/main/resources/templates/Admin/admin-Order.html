@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<title>Fresh Shop</title>
+
+<th:block th:replace="~{Admin/Admin-style/Admin-template-css:: html}"></th:block>
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-header.html:: header}"></div>
+	<!-- End Main Top -->
+
+	<!-- Start Sidebar -->
+	<div th:replace="~{Admin/Admin-fragment/Admin-sidebar.html:: aside}"></div>
+	<!-- End Sidebar -->
+
+	<main id="main" class="main">
+
+		<div class="pagetitle">
+			<h1 th:text="#{table.tbOrder}"></h1>
+
+		</div>
+		<!-- End Page Title -->
+
+		<section class="section">
+			<!-- Start Cart -->
+			<div class="card pt-5" id="orderDetailsCard" style="display: none;">
+				<div class="container">
+
+					<div class="row">
+						<div class="col-sm-6 col-lg-6 mb-3">
+							<div class="checkout-address">
+								<div class="title-left">
+									<h3 class="font-weight-bold text-success">Billing
+										Information</h3>
+								</div>
+								<hr>
+								<form id="orderForm" class="needs-validation"
+									action="/placeOrder">
+									<div class="row"></div>
+									<div class="mb-3">
+										<label for="username">Name</label>
+										<div class="input-group">
+											<input type="text" class="form-control" id="username"
+												value="John Doe" readonly>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label for="email">Email</label> <input type="email"
+											class="form-control" id="email" value="john@example.com"
+											readonly>
+									</div>
+									<div class="mb-3">
+										<label for="phoneNumber">Phone</label> <input type="text"
+											class="form-control" id="phoneNumber" value="123-456-7890"
+											readonly>
+									</div>
+									<div class="mb-3">
+										<label for="address">Address</label> <input type="text"
+											class="form-control" id="address" value="123 Street, City"
+											readonly>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="col-sm-6 col-lg-6 mb-3">
+							<div class="row">
+								<div class="col-md-12 col-lg-12"></div>
+								<div class="col-md-12 col-lg-12">
+									<div class="odr-box">
+										<div class="title-left">
+											<h3 class="p-1 text-success">Shoping Cart</h3>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="col-md-12 col-lg-12">
+									<div class="order-box p-2">
+										<div class="d-flex gr-total">
+											<h5>
+												Total: <span class="total ml-auto h5 formatPrice">20.00</span>
+											</h5>
+
+										</div>
+										<div class="d-flex pt-3">
+											<h5>
+												Discount(10%): <span
+													class="discount ml-auto font-weight-bold formatPrice">0.00</span>
+											</h5>
+
+										</div>
+										<div class="d-flex pt-3">
+											<h5>
+												Shipping: <span class="ml-auto font-weight-bold">Free</span>
+											</h5>
+										</div>
+
+										<div class="d-flex pt-3">
+											<h5>
+												Subtotal: <span
+													class="subtotal ml-auto font-weight-bold formatPrice">20.00</span>
+											</h5>
+
+										</div>
+										<hr>
+									</div>
+									<input type="hidden" id="orderId" name="orderId" value="..." />
+									<!-- Giá trị orderId nên được cung cấp -->
+									<label class="h5 text-success">Status: </label> <select
+										class="form-select" name="newStatus" id="statusSelect"
+										onchange="updateStatus()">
+										<option value="Waiting">Waiting</option>
+										<option value="Delivery">Delivery</option>
+										<option value="Delivered">Delivered</option>
+										<option value="Cancelled">Cancelled</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-main table-responsive">
+								<table class="table">
+									<thead class="table-success">
+										<tr>
+											<th th:text="#{table.img}"></th>
+											<th th:text="#{table.productName}"></th>
+											<th th:text="#{table.price}"></th>
+											<th th:text="#{table.quantity}"></th>
+											<th th:text="#{table.total}"></th>
+											<th th:text="#{table.date}"></th>
+										</tr>
+									</thead>
+									<tbody id="tableBody"></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- End Cart -->
+
+
+
+			<div class="row pt-2">
+				<div class="col-lg-12">
+					<div class="card pt-5">
+						<div class="card-body">
+							<!--             <h5 class="card-title" th:text="#{table.tbOrder}"></h5> -->
+							<!-- Table with stripped rows -->
+
+							<div class="pb-4">
+								<form id="searchForm" th:action="@{/admin/order/1}" class="row">
+									<div class="col-lg-8">
+										<div class="row w-50">
+											<div class="col-lg-11">
+												<input type="text" name="searchName" class="form-control"
+													th:value="${searchName}" placeholder="Customer Name">
+												<input type="hidden" th:value="${sortField}"
+													name="sortField" class="form-control"> <input
+													type="hidden" th:value="${sortDir}" name="sortDir"
+													class="form-control">
+												<!-- 											<input type="hidden" th:value="${status}" name="status" -->
+												<!-- 												class="form-control"> -->
+											</div>
+											<div class="col-lg-1">
+												<button type="submit" class="btn btn-outline-primary"
+													th:text="#{btnSearch}"></button>
+											</div>
+										</div>
+										<!-- 									<div class="col-lg-2"> -->
+										<!-- 										<input type="date" th:value="${startDate}" name="startDate" -->
+										<!-- 											class="form-control"> -->
+										<!-- 									</div> -->
+										<!-- 									<div class="col-lg-2"> -->
+										<!-- 										<input type="date" th:value="${endDate}" name="endDate" -->
+										<!-- 											class="form-control"> -->
+										<!-- 									</div> -->
+									</div>
+									<div class="col-lg-2"></div>
+									<div class="col-lg-2">
+										<label class="input-group-text" for="inputGroupSelect">Status
+											<select th:value="${status}" name="statusOrder"
+											class="form-select ms-2">
+												<option th:value="null" th:text="All"></option>
+												<option th:value="Waiting" th:text="Waiting"
+													th:selected="${status == 'Waiting'}"></option>
+												<option th:value="Delivery" th:text="Delivery"
+													th:selected="${status == 'Delivery'}"></option>
+												<option th:value="Delivered" th:text="Delivered"
+													th:selected="${status == 'Delivered'}"></option>
+												<option th:value="Cancelled" th:text="Cancelled"
+													th:selected="${status == 'Cancelled'}"></option>
+										</select>
+									</div>
+								</form>
+								<!--               <label class="input-group-text" for="inputGroupSelect01">Show -->
+								<!--                 <select class="form-select ms-2" id="inputGroupSelect01"> -->
+								<!--                   <option value="1">10</option> -->
+								<!--                   <option value="2">25</option> -->
+								<!--                   <option value="3">50</option> -->
+								<!--                   <option value="4">100</option> -->
+								<!--                 </select> -->
+								<!--               </label> -->
+
+							</div>
+							<h5 class="center text-danger" th:text="${message}"></h5>
+							<h4 th:if="${totalPages != 0 && status == 'Open'}"
+								class="text-success">
+								<span th:text="#{table.profit}"></span> [[${profit}]]
+							</h4>
+							<table class="table table-striped">
+								<thead class="table-success">
+									<tr>
+										<!-- 										<th scope="col"><a -->
+										<!-- 											th:href="@{'/admin/order/' + (${currentPage}) + '?sortField=orderId' + '&sortDir=' + ${sortDir} + '&status=' + ${currentStatus}}"> -->
+										<!-- 												ID</a></th> -->
+										<th th:text="#{table.customerId}" scope="col">
+											<!-- 										<a --> <!-- 											th:href="@{'/admin/order/' + (${currentPage}) + '?sortField=customer' + '&sortDir=' + ${sortDir} + '&status=' + ${currentStatus}}" -->
+											<!-- 											th:text="#{table.customerId}"> </a> -->
+										</th>
+										<th scope="col">Phone Number</th>
+										<th scope="col">Address</th>
+										<th th:text="#{table.total}" scope="col">
+											<!-- 										<a --> <!-- 											th:href="@{'/admin/order/' + (${currentPage}) + '?sortField=totalAmount' + '&sortDir=' + ${sortDir} + '&status=' + ${currentStatus}}" -->
+											<!-- 											th:text="#{table.total}"></a> -->
+										</th>
+										<th th:text="#{table.createdAt}" scope="col">
+											<!-- 										<a --> <!-- 											th:href="@{'/admin/order/' + (${currentPage}) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&status=' + ${status}}" -->
+											<!-- 											th:text="#{table.createdAt}"></a> -->
+										</th>
+										<th th:text="#{table.open}" scope="col">
+											<!-- 										<a --> <!-- 											th:href="@{'/admin/order/' + (${currentPage}) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&status=' + ${status}}" -->
+											<!-- 											th:text="#{table.open}"></a> -->
+										</th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="order : ${listOrder}">
+										<!-- 										<td th:text="${order.orderId}"></td> -->
+										<td th:text="${order.fullName}"></td>
+										<td th:text="${order.phoneNumber}"></td>
+										<td th:text="${order.address}"></td>
+										<td class="formatPrice" th:text="${order.totalAmount}"></td>
+										<td class="formatDate" th:text="${order.createdAt}"></td>
+										<td th:text="${order.status}"></td>
+										<td><a class="edit-button btn btn-outline-danger me-2"
+											th:onclick="'fetchAndDisplayOrderDetails(\'' + ${order.orderId} + '\')'">Edit</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div th:if="${totalPages > 1}"
+								class="pagination justify-content-center">
+								<ul class="pagination">
+									<li class="page-item"><a class="page-link"
+										th:if="${currentPage > 1}"
+										th:href="@{'/admin/order/' + (${currentPage} - 1) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&statusOrder=' + ${status} + '&searchName=' + ${searchName}}">&laquo;</a>
+										<span class="page-link disabled"
+										th:unless="${currentPage > 1}">&laquo;</span></li>
+
+									<li class="page-item"
+										th:each="i: ${#numbers.sequence(1, totalPages)}"
+										th:classappend="${currentPage == i} ? 'active' : ''"><a
+										class="page-link"
+										th:href="@{'/admin/order/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&statusOrder=' + ${status} + '&searchName=' + ${searchName}}">[[${i}]]</a>
+									</li>
+
+									<li class="page-item"><a class="page-link"
+										th:if="${currentPage < totalPages}"
+										th:href="@{'/admin/order/' + (${currentPage} + 1) + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&statusOrder=' + ${status} + '&searchName=' + ${searchName}}">&raquo;</a>
+										<span class="page-link disabled"
+										th:unless="${currentPage < totalPages}">&raquo;</span></li>
+								</ul>
+							</div>
+
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	</main>
+	<!-- End #main -->
+
+	<a href="#"
+		class="back-to-top d-flex align-items-center justify-content-center"><i
+		class="bi bi-arrow-up-short"></i></a>
+
+	<th:block th:replace="~{Admin/Admin-style/Admin-template-scr:: html}"></th:block>
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+	<script>
+		var priceElements = document.querySelectorAll('.formatPrice');
+		priceElements.forEach(function(element) {
+			// Lấy giá trị từ phần tử b
+			var currentPrice = element.textContent;
+
+			// Định dạng giá trị theo hàng nghìn (ví dụ)
+			var formattedPrice = Number(currentPrice).toLocaleString('vi-VN', {
+				style : 'currency',
+				currency : 'VND',
+				minimumFractionDigits : 0,
+				maximumFractionDigits : 0
+			});
+
+			// Gán lại giá trị vào phần tử
+			element.textContent = formattedPrice;
+		});
+
+		// Lấy tất cả các phần tử có class là 'formatDate'
+		var dateElements = document.querySelectorAll('.formatDate');
+
+		// Định dạng ngày tháng năm cho mỗi phần tử
+		dateElements.forEach(function(element) {
+			// Lấy giá trị ngày tháng từ textContent của phần tử
+			var dateValue = element.textContent;
+
+			// Chuyển đổi giá trị ngày tháng sang đối tượng Date
+			var date = new Date(dateValue);
+
+			// Định dạng ngày tháng năm theo định dạng Việt Nam
+			var formattedDate = date.toLocaleString('vi-VN', {
+				timeZone : 'Asia/Ho_Chi_Minh'
+			});
+
+			// Gán lại giá trị đã định dạng vào textContent của phần tử
+			element.textContent = formattedDate;
+		});
+
+		// Gọi hàm khi trang đã tải xong
+		$(document).ready(function() {
+			formatAndSetPrice();
+			formatAndSetDate();
+		});
+
+		// Define a function to fetch and update order details
+		function fetchAndDisplayOrderDetails(orderId) {
+			// Gửi AJAX request đến server
+			$
+					.ajax({
+						type : "GET",
+						url : "/admin/orderDetail",
+						data : {
+							orderId : orderId
+						},
+						success : function(data) {
+							// Cập nhật thông tin đơn hàng
+							$("#orderId").val(data.orderId);
+							$("#username").val(data.orderFullName);
+							$("#email").val(data.orderEmail);
+							$("#phoneNumber").val(data.orderPhoneNumber);
+							$("#address").val(data.orderAddress);
+							var orderStatus = data.orderStatus;
+							$("select.form-select").val(orderStatus);
+							// Cập nhật thông tin sản phẩm trong giỏ hàng
+
+							var cartContainer = document
+									.getElementById("tableBody");
+							cartContainer.innerHTML = ""; // Clear old content in the cart
+
+							function formatPrice(amount) {
+								return new Intl.NumberFormat('vi-VN', {
+									style : 'currency',
+									currency : 'VND'
+								}).format(amount);
+							}
+
+							function formatDate(dateString) {
+								const options = {
+									year : 'numeric',
+									month : 'numeric',
+									day : 'numeric',
+									hour : 'numeric',
+									minute : 'numeric',
+									second : 'numeric',
+									timeZone : 'Asia/Ho_Chi_Minh' // Vietnam time zone
+								};
+
+								const formattedDate = new Intl.DateTimeFormat(
+										'vi-VN', options).format(new Date(
+										dateString));
+								return formattedDate;
+							}
+							var listOrderDetailsDTO = data.listOrderDetailsDTO;
+
+							listOrderDetailsDTO
+									.forEach(function(od) {
+										var row = '<tr>'
+												+ '<td class="thumbnail-img">'
+												+ '<img src="' + od.productImage + '" style="height: 70px; width: 70px;" alt="Product Image">'
+												+ '</td>'
+												+ '<td class="name-pr">'
+												+ od.productName
+												+ '</td>'
+												+ '<td>'
+												+ '<span class="price-pr formatPrice">'
+												+ formatPrice(od.price)
+												+ '</span>/1Kg'
+												+ '</td>'
+												+ '<td class="price-pr">'
+												+ od.quantity
+												+ '</td>'
+												+ '<td class="formatPrice">'
+												+ formatPrice(od.price
+														* od.quantity)
+												+ '</td>'
+												+ '<td class="formatDate">'
+												+ formatDate(od.date) + '</td>'
+												+ '</tr>';
+
+										// Append the row to the table body
+										cartContainer.innerHTML += row;
+									});
+
+							// Cập nhật tổng cộng và các mục khác
+							$(".subtotal").text(
+									formatPrice(data.orderSubToltal));
+							$(".discount")
+									.text(formatPrice(data.orderDiscount));
+							$(".total").text(
+									formatPrice(data.orderToltalAmount));
+
+							// Cập nhật trạng thái đơn hàng
+							$("select.form-select").val(data.orderStatus);
+						},
+						error : function() {
+							alert("Đã có lỗi xảy ra khi lấy dữ liệu đơn đặt hàng.");
+						}
+					});
+		}
+
+		// Attach the function to the click event
+		$(document).ready(function() {
+			$(".edit-button").click(function() {
+				var orderId = $(this).data("order-id");
+				fetchAndDisplayOrderDetails(orderId);
+				$("#orderDetailsCard").show();
+			});
+		});
+
+		function updateStatus() {
+			var orderId = document.getElementById('orderId').value;
+			var newStatus = document.getElementById('statusSelect').value;
+
+			// Sử dụng Ajax để gửi dữ liệu tới controller
+			$.ajax({
+				type : 'POST',
+				url : '/admin/order/updateStatus',
+				data : {
+					orderId : orderId,
+					newStatus : newStatus
+				},
+				success : function(response) {
+					// Xử lý phản hồi từ server nếu cần
+					console.log(response);
+					window.location.reload();
+				},
+				error : function(error) {
+					// Xử lý lỗi nếu có
+					console.log(error);
+				}
+			});
+		}
+
+		document.addEventListener("DOMContentLoaded", function() {
+			var form = document.getElementById("searchForm");
+			var statusSelect = document
+					.querySelector('select[name="statusOrder"]');
+
+			console.log("tới được đây rồi");
+			statusSelect.addEventListener("change", function() {
+				form.submit();
+			});
+		});
+	</script>
+</body>
+</html>

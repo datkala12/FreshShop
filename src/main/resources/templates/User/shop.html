@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Basic -->
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Site Metas -->
+<title>Fresh Shop</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<th:block th:replace="~{User/Style/template-css :: html}"></th:block>
+
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+.product-container {
+	margin-top: 20px;
+}
+
+.product-item {
+	margin-bottom: 20px;
+}
+</style>
+
+</head>
+
+<body>
+	<!-- Start Main Top -->
+	<div th:replace="~{User/fragment/header.html :: header}"></div>
+	<!-- End Main Top -->
+
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-2">
+				<div class="sidebar">
+
+					<h3 th:text="#{category}"></h3>
+
+					<ul class="list-group">
+						<th:block th:each="cate : ${listCate}">
+							<a th:href="@{/getProductsByCate(cateId=${cate.categoryId})}">
+								<li class="list-group-item fs-2"
+								style="text-transform: capitalize;"
+								th:text="#{${'category.name.' + (cate.categoryName == 'root vegetables' ? 'root_vegetables' : cate.categoryName)}}"
+								th:classappend="${#strings.equals(cateId, cate.categoryId)} ? 'active_line' : ''"></li>
+							</a>
+						</th:block>
+					</ul>
+
+				</div>
+			</div>
+
+			<div class="col-md-10">
+				<div class="product-container">
+
+					<h2 th:text="#{product.title}"></h2>
+					<form class="mb-3" th:action="@{/searchProduct}" method="GET">
+						<div class="input-group">
+							<input type="text" th:if="${searchName != 'none'}"
+								th:value="${searchName}" name="searchName" class="form-control"
+								th:placeholder="#{placeholder.search}"> <input
+								type="text" th:if="${searchName == 'none'}" name="searchName"
+								class="form-control" th:placeholder="#{placeholder.search}">
+							<input type="hidden" name="cateId" class="form-control"
+								th:value="${cateId}"> <input type="hidden"
+								name="currentPage" class="form-control"
+								th:value="${currentPage}">
+							<div class="input-group-append">
+								<button class="btn hvr-hover text-white" type="submit"
+									th:text="#{btnSearch}"></button>
+							</div>
+						</div>
+					</form>
+
+					<div class="row">
+						<th:block th:each="product : ${listProduct}">
+							<div class="item col-md-4">
+								<div class="products-single fix"
+									style="max-height: 400px; background: whitesmoke;">
+									<div class="box-img-hover">
+										<img th:src="@{${product.product_img}}"
+											style="height: 250px;" class="img-fluid w-100" alt="Image">
+										<div class="mask-icon">
+											<ul>
+												<li><a
+													th:href="@{/displayDetail(productId=${product.productId})}"
+													data-toggle="tooltip" data-placement="right"
+													th:title="#{product.view}"><i class="fas fa-eye"></i></a></li>
+												<li><a th:href="@{/viewCart}" data-toggle="tooltip"
+													data-placement="right" th:title="#{product.viewCart}"><i
+														class="fa-solid fa-cart-shopping"></i></a></li>
+												<!-- 												<li><a href="#" data-toggle="tooltip" -->
+												<!-- 													data-placement="right" th:title="#{product.addToWishList}"><i -->
+												<!-- 														class="far fa-heart"></i></a></li> -->
+											</ul>
+											<a class="cart add-to-cart-button"
+												th:onclick="'addToCart(\'' + ${product.productId} + '\')'"
+												th:text="#{product.addToCart}"></a>
+										</div>
+									</div>
+									<div class="why-text">
+										<h4 th:text="${product.productName}"></h4>
+										<b class="product-price" th:text="${product.price}"></b><b>
+											/ 1Kg</b>
+										<!-- 										<p><span th:text="${#numbers.formatDecimal(product.price, 0, 'GROUPING_SIZE', 3, 'DECIMAL_SEPARATOR', '.')}"></span></p> -->
+									</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+
+					<th:block th:if="${totalPages > 0}">
+						<div class="pagination-style text-center m-5">
+							<ul
+								class="pagination d-flex justify-content-center align-items-center">
+								<li class="page-item"><a class="page-link btn hvr-hover"
+									th:if="${currentPage > 1}"
+									th:href="@{'/shop/page/' + ${currentPage - 1}+'?cateId=' + ${cateId} + '&&searchName='+${searchName}}">
+										<span class="fa fa-angle-double-left" aria-hidden="true"></span>
+								</a> <a class="page-link disabled" th:unless="${currentPage > 1}">
+										<span class="fa fa-angle-double-left" aria-hidden="true"></span>
+								</a></li>
+
+								<th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+									<li class="page-item"><a class="page-link"
+										th:if="${currentPage != i}"
+										th:href="@{'/shop/page/' + ${i}+'?cateId=' + ${cateId} + '&&searchName='+${searchName}}">[[${i}]]</a>
+										<a class="page-link active btn hvr-hover text-white"
+										th:unless="${currentPage != i}">[[${i}]]</a></li>
+								</th:block>
+
+								<li class="page-item"><a class="page-link btn hvr-hover"
+									th:if="${currentPage < totalPages}"
+									th:href="@{'/shop/page/' + ${currentPage + 1}+'?cateId=' + ${cateId} + '&&searchName='+${searchName}}">
+										<span class="fa fa-angle-double-right" aria-hidden="true"></span>
+								</a> <a class="page-link disabled"
+									th:unless="${currentPage < totalPages}"> <span
+										class="fa fa-angle-double-right" aria-hidden="true"></span>
+								</a></li>
+							</ul>
+						</div>
+					</th:block>
+
+					<h4 th:text="${notFound}"></h4>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- Start Shop Page  -->
+
+
+	<!-- Start Footer  -->
+	<div th:replace="~{User/fragment/footer.html :: footer}"></div>
+	<!-- End Footer  -->
+
+
+	<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+	<!-- ALL JS FILES -->
+	<th:block th:replace="~{User/Style/template-scr:: html}"></th:block>
+	<script>
+		function addToCart(productId) {
+			console.log(productId);
+			$.ajax({
+				url : "/addToCart",
+				type : "GET",
+				data : {
+					productId : productId
+				},
+				success : function(response) {
+					// Extract the message and itemInCart value from the response
+					var message = response.message;
+					var itemInCart = response.itemInCart;
+
+					// Update the itemInCart value in the UI if needed
+					if (itemInCart !== undefined) {
+						$("#itemInCart").text(itemInCart);
+					}
+
+					// Display a success toast message
+					toastr.success(message, "Success", {
+						positionClass : "toast-top-right"
+					}).click(function() {
+						window.location.href = "/viewCart";
+					});
+				},
+				error : function(xhr, status, error) {
+					toastr.error("Please login", "Error", {
+						positionClass : "toast-top-right",
+						hideDuration : 500
+					}).click(function() {
+						window.location.href = "/login";
+					});
+				}
+			});
+		}
+
+		// Hàm xử lý định dạng giá trị và gán lại vào phần tử
+        function formatAndSetPrice() {
+            // Lặp qua tất cả các phần tử có class 'product-price'
+            $('.product-price').each(function () {
+                // Lấy giá trị từ phần tử b
+                var priceElement = $(this);
+                var currentPrice = priceElement.text();
+
+                // Định dạng giá trị theo hàng nghìn (ví dụ)
+                var formattedPrice = Number(currentPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+                // Gán lại giá trị vào phần tử
+                priceElement.text(formattedPrice);
+            });
+        }
+
+        // Gọi hàm khi trang đã tải xong
+        $(document).ready(function () {
+            formatAndSetPrice();
+        });
+        
+	</script>
+
+</body>
+
+</html>
